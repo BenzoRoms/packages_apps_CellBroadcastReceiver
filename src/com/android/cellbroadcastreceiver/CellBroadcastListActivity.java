@@ -16,6 +16,8 @@
 
 package com.android.cellbroadcastreceiver;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
@@ -54,9 +56,17 @@ import java.util.ArrayList;
  */
 public class CellBroadcastListActivity extends Activity {
 
+    private final static int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS},
+                    RECEIVE_SMS_PERMISSION_REQUEST_CODE);
+        }
 
         // Dismiss the notification that brought us here (if any).
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
